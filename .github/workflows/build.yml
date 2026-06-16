@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build app
+        run: dotnet build src\LockPig\LockPig.csproj -c Release
+
+      - name: Build installer
+        run: dotnet build src\LockCat.Installer\LockCat.Installer.csproj -c Release
+
+      - name: Build uninstaller
+        run: dotnet build src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release
+
+      - name: Run uninstall safety probe
+        run: dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c Release

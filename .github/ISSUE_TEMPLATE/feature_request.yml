@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest a new LockCat feature or cat behavior.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like LockCat to do?
+      placeholder: I would like LockCat to...
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this useful?
+      placeholder: This would help because...
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Extra details
+      description: Mockups, examples, or behavior notes.

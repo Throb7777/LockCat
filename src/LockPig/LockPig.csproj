@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>LockCat</AssemblyName>
+    <Product>LockCat</Product>
+    <AssemblyTitle>LockCat</AssemblyTitle>
+    <ApplicationIcon>Assets\Icons\LockCat.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\LockCat.ico" />
+    <Resource Include="Assets\Pixel\cat-avatar-48.png" />
+    <Resource Include="Assets\Pixel\cat-title-20.png" />
+    <Resource Include="Assets\Pixel\cat-mini-24.png" />
+    <Resource Include="Assets\Pixel\paw-16.png" />
+    <Resource Include="Assets\Pixel\sparkle-12.png" />
+    <Resource Include="Assets\Pixel\icon-keyboard-24.png" />
+    <Resource Include="Assets\Pixel\icon-lock-24.png" />
+    <Resource Include="Assets\Pixel\icon-gear-24.png" />
+    <Resource Include="Assets\Pixel\ref-wordmark-lockcat.png" />
+    <Resource Include="Assets\Pixel\ref-title-cat.png" />
+    <Resource Include="Assets\Pixel\ref-avatar-frame.png" />
+    <Resource Include="Assets\Pixel\ref-icon-tile-keyboard.png" />
+    <Resource Include="Assets\Pixel\ref-icon-tile-lock.png" />
+    <Resource Include="Assets\Pixel\ref-icon-tile-cat.png" />
+    <Resource Include="Assets\Pixel\ref-icon-tile-gear.png" />
+    <Resource Include="Assets\Pixel\ref-paw-subtitle.png" />
+    <Resource Include="Assets\Pixel\ref-paw-save.png" />
+    <Resource Include="Assets\Pixel\ref-sparkle.png" />
+    <Resource Include="Assets\Pixel\target-logo.png" />
+    <Resource Include="Assets\Pixel\target-peeking-cat.png" />
+    <Resource Include="Assets\Pixel\target-tile-keyboard.png" />
+    <Resource Include="Assets\Pixel\target-tile-lock.png" />
+    <Resource Include="Assets\Pixel\target-tile-cat.png" />
+    <Resource Include="Assets\Pixel\target-tile-gear.png" />
+    <Resource Include="Assets\Pixel\target-keycap-bg.png" />
+    <Resource Include="Assets\Pixel\target-keycap-bg-clean.png" />
+    <Resource Include="Assets\Pixel\target-button-normal-bg.png" />
+    <Resource Include="Assets\Pixel\target-button-primary-bg.png" />
+    <Resource Include="Assets\Pixel\target-toggle-on.png" />
+    <Resource Include="Assets\Pixel\target-toggle-off.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-on.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-off.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-on-clean.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-off-clean.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-on-final.png" />
+    <Resource Include="Assets\Pixel\target-toggle-track-off-final.png" />
+    <Resource Include="Assets\Pixel\target-toggle-thumb.png" />
+    <Resource Include="Assets\Pixel\target-keycap-bg-soft.png" />
+    <Resource Include="Assets\Pixel\target-paw-bullet.png" />
+    <Resource Include="Assets\Pixel\target-footer-paw.png" />
+    <Resource Include="Assets\Pixel\target-footer-paw-left.png" />
+    <Resource Include="Assets\Pixel\target-footer-paw-right.png" />
+    <Resource Include="Assets\Pixel\target-footer-paw-small.png" />
+    <Resource Include="Assets\Pixel\target-footer-paw-button.png" />
+    <Resource Include="Assets\Pixel\target-sparkle-small.png" />
+    <Resource Include="Assets\Cat\Sprites\cat-idle.png" />
+    <Resource Include="Assets\Cat\Sprites\cat-sit.png" />
+    <Resource Include="Assets\Cat\Sprites\cat-wave.png" />
+    <Resource Include="Assets\Cat\Sprites\cat-stretch.png" />
+    <Resource Include="Assets\Cat\Sprites\cat-guard.png" />
+    <Resource Include="Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" />
+    <Content Include="Assets\Fonts\FusionPixelFont-OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Fonts\FusionPixelFont-LICENSE-OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Fonts\FusionPixelFont-Upstream-LICENSE\*.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\README.md" Link="README.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\..\README.zh-CN.md" Link="README.zh-CN.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\..\README.ja.md" Link="README.ja.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

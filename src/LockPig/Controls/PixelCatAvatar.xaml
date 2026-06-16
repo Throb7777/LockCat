@@ -1,0 +1,11 @@
+<UserControl x:Class="LockPig.Controls.PixelCatAvatar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="48"
+             Height="48"
+             SnapsToDevicePixels="True">
+    <Image x:Name="AvatarImage"
+           Stretch="Uniform"
+           RenderOptions.BitmapScalingMode="NearestNeighbor"
+           SnapsToDevicePixels="True"/>
+</UserControl>

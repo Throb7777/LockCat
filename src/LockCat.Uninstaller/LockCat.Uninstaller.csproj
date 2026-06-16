@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>LockCatUninstaller</AssemblyName>
+    <Product>LockCat Uninstaller</Product>
+    <AssemblyTitle>LockCat Uninstaller</AssemblyTitle>
+    <ApplicationIcon>..\LockCat.SetupCommon\Assets\Icons\LockCatUninstaller.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\LockCat.SetupCommon\*.cs" Link="SetupCommon\%(Filename)%(Extension)" />
+    <Content Include="..\LockCat.SetupCommon\Assets\Icons\LockCatUninstaller.ico" TargetPath="Assets\Icons\LockCatUninstaller.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\LockPig\Assets\Icons\LockCat.ico" TargetPath="Assets\Icons\LockCat.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\LockPig\Assets\Pixel\cat-mini-24.png" TargetPath="Assets\Pixel\cat-mini-24.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\LockCat.SetupCommon\Assets\Illustrations\*.png" TargetPath="Assets\Illustrations\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\LockPig\Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" TargetPath="Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="CopyUninstallerLooseAssets" AfterTargets="Publish">
+    <MakeDir Directories="$(PublishDir)Assets\Icons;$(PublishDir)Assets\Fonts;$(PublishDir)Assets\Pixel" />
+    <Copy SourceFiles="..\LockCat.SetupCommon\Assets\Icons\LockCatUninstaller.ico" DestinationFiles="$(PublishDir)Assets\Icons\LockCatUninstaller.ico" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="..\LockPig\Assets\Icons\LockCat.ico" DestinationFiles="$(PublishDir)Assets\Icons\LockCat.ico" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="..\LockPig\Assets\Pixel\cat-mini-24.png" DestinationFiles="$(PublishDir)Assets\Pixel\cat-mini-24.png" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="..\LockPig\Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" DestinationFiles="$(PublishDir)Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

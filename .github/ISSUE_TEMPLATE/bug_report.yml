@@ -1,0 +1,43 @@
+name: Bug report
+description: Tell LockCat what went wrong.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping LockCat improve. Please include enough detail so the tiny guard cat can reproduce the problem.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the issue and what you expected instead.
+      placeholder: LockCat did this, but I expected that...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps if you can.
+      placeholder: |
+        1. Open LockCat
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: LockCat version
+      placeholder: v1.0.0
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+  - type: textarea
+    id: extra
+    attributes:
+      label: Extra details
+      description: Screenshots, logs, or anything else that may help.
