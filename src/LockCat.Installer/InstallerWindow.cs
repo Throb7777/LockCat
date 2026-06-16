@@ -13,11 +13,11 @@ public sealed class InstallerWindow : PixelSetupWindow
 {
     private readonly string[] _args;
     private string _installDirectory;
-    private bool _desktopShortcut;
-    private bool _startWithWindows = true;
-    private bool _addStartMenuShortcut = true;
+    private bool _desktopShortcut = true;
+    private bool _startWithWindows;
+    private bool _addStartMenuShortcut;
     private bool _advancedExpanded;
-    private bool _launchNow = true;
+    private bool _launchNow;
     private bool _viewGuide;
     private Rectangle? _progressFill;
     private TextBlock? _progressText;
@@ -32,9 +32,12 @@ public sealed class InstallerWindow : PixelSetupWindow
         _args = args;
         _installDirectory = SetupOperations.NormalizeInstallDirectoryForInstall(
             SetupOperations.ReadOption(args, "--install-dir") ?? SetupOperations.DefaultInstallDirectory());
-        _desktopShortcut = SetupOperations.HasFlag(args, "--desktop-shortcut");
-        _startWithWindows = !SetupOperations.HasFlag(args, "--no-startup");
-        _addStartMenuShortcut = !SetupOperations.HasFlag(args, "--no-start-menu");
+        _desktopShortcut = !SetupOperations.HasFlag(args, "--no-desktop-shortcut")
+            && (SetupOperations.HasFlag(args, "--desktop-shortcut") || _desktopShortcut);
+        _startWithWindows = SetupOperations.HasFlag(args, "--startup")
+            || (!SetupOperations.HasFlag(args, "--no-startup") && SetupOperations.HasFlag(args, "--start-with-windows"));
+        _addStartMenuShortcut = SetupOperations.HasFlag(args, "--start-menu");
+        _launchNow = SetupOperations.HasFlag(args, "--launch-after-install");
         ShowWelcome();
     }
 
@@ -86,14 +89,14 @@ public sealed class InstallerWindow : PixelSetupWindow
         card.Margin = new Thickness(46, 48, 46, 10);
         PageContent.Children.Add(card);
         FooterButtons(
-            PixelButton(Texts.Cancel, false, (_, _) => Close()),
+            PixelButton(Texts.Cancel, false, (_, _) => ExitSetup()),
             PixelButton(Texts.StartInstall, true, (_, _) => ShowOptions()));
     }
 
     private void ShowOptions()
     {
         ClearPage();
-        Grid page = new() { Margin = new Thickness(52, _advancedExpanded ? 18 : 44, 52, 8) };
+        Grid page = new() { Margin = new Thickness(52, _advancedExpanded ? 8 : 44, 52, 8) };
         page.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(285) });
         page.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         page.Children.Add(Illustration("install-options.png", 260, 360));
@@ -107,7 +110,7 @@ public sealed class InstallerWindow : PixelSetupWindow
         form.Children.Add(header);
 
         TextBlock location = Text(Texts.InstallLocation, 19, FontWeights.Bold);
-        location.Margin = new Thickness(0, _advancedExpanded ? 18 : 28, 0, 8);
+        location.Margin = new Thickness(0, _advancedExpanded ? 10 : 28, 0, 8);
         form.Children.Add(location);
         form.Children.Add(LocationRow());
         form.Children.Add(PixelCheck(Texts.CreateDesktopShortcut, null, _desktopShortcut, value => _desktopShortcut = value));
@@ -119,19 +122,20 @@ public sealed class InstallerWindow : PixelSetupWindow
             _advancedExpanded = !_advancedExpanded;
             ShowOptions();
         });
-        advanced.Margin = new Thickness(0, _advancedExpanded ? 10 : 18, 0, 0);
+        advanced.Margin = new Thickness(0, _advancedExpanded ? 6 : 18, 0, 0);
         form.Children.Add(advanced);
         if (_advancedExpanded)
         {
             form.Children.Add(PixelCheck(Texts.AddStartMenuShortcut, null, _addStartMenuShortcut, value => _addStartMenuShortcut = value));
             form.Children.Add(PixelCheck(Texts.LaunchAfterInstall, null, _launchNow, value => _launchNow = value));
             TextBlock uninstallInfo = Text(Texts.UninstallEntryInfo, 14, FontWeights.SemiBold, "#8A715B");
-            uninstallInfo.Margin = new Thickness(42, 2, 0, 0);
+            uninstallInfo.Margin = new Thickness(42, 0, 0, 0);
             form.Children.Add(uninstallInfo);
         }
 
-        Border card = PixelCard(form);
-        card.Padding = _advancedExpanded ? new Thickness(38, 22, 38, 18) : new Thickness(38, 30, 38, 30);
+        UIElement formContent = _advancedExpanded ? PixelScrollViewer(form, 410) : form;
+        Border card = PixelCard(formContent);
+        card.Padding = _advancedExpanded ? new Thickness(30, 14, 30, 14) : new Thickness(38, 30, 38, 30);
         Grid.SetColumn(card, 1);
         page.Children.Add(card);
         PageContent.Children.Add(page);
@@ -186,12 +190,13 @@ public sealed class InstallerWindow : PixelSetupWindow
     {
         if (SetupOperations.NeedsElevation(_installDirectory) && !SetupOperations.HasFlag(_args, "--elevated"))
         {
-            string desktopArg = _desktopShortcut ? " --desktop-shortcut" : string.Empty;
-            string startupArg = _startWithWindows ? string.Empty : " --no-startup";
-            string startMenuArg = _addStartMenuShortcut ? string.Empty : " --no-start-menu";
-            string args = $"--elevated --install-dir \"{_installDirectory}\"{desktopArg}{startupArg}{startMenuArg}";
+            string desktopArg = _desktopShortcut ? string.Empty : " --no-desktop-shortcut";
+            string startupArg = _startWithWindows ? " --startup" : string.Empty;
+            string startMenuArg = _addStartMenuShortcut ? " --start-menu" : string.Empty;
+            string launchArg = _launchNow ? " --launch-after-install" : string.Empty;
+            string args = $"--elevated --install-dir \"{_installDirectory}\"{desktopArg}{startupArg}{startMenuArg}{launchArg}";
             SetupOperations.RelaunchElevated(args);
-            Close();
+            ExitSetup();
             return;
         }
 
@@ -321,7 +326,7 @@ public sealed class InstallerWindow : PixelSetupWindow
                 OpenGuide();
             }
 
-            Close();
+            ExitSetup();
         }));
     }
 
@@ -342,7 +347,7 @@ public sealed class InstallerWindow : PixelSetupWindow
         FooterButtons(
             PixelButton(Texts.Details, false, (_, _) => OpenInstallDetails()),
             PixelButton(Texts.Retry, false, async (_, _) => await BeginInstallAsync()),
-            PixelButton(Texts.ExitInstall, true, (_, _) => Close()));
+            PixelButton(Texts.ExitInstall, true, (_, _) => ExitSetup(1)));
     }
 
     private void OpenInstallDetails()

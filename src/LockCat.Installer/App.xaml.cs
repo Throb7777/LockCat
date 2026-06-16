@@ -26,10 +26,11 @@ public partial class App : Application
                     InstallDirectory = installDir,
                     PayloadDirectory = payload,
                     UninstallerPath = uninstaller,
-                    CreateDesktopShortcut = SetupOperations.HasFlag(e.Args, "--desktop-shortcut"),
-                    StartWithWindows = !SetupOperations.HasFlag(e.Args, "--no-startup"),
+                    CreateDesktopShortcut = !SetupOperations.HasFlag(e.Args, "--no-desktop-shortcut"),
+                    StartWithWindows = SetupOperations.HasFlag(e.Args, "--startup")
+                        || SetupOperations.HasFlag(e.Args, "--start-with-windows"),
                     StartAfterInstall = false,
-                    AddStartMenuShortcut = !SetupOperations.HasFlag(e.Args, "--no-start-menu")
+                    AddStartMenuShortcut = SetupOperations.HasFlag(e.Args, "--start-menu")
                 });
                 Shutdown(0);
                 return;

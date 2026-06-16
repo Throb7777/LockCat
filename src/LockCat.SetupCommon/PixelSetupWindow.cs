@@ -1,6 +1,8 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -14,6 +16,7 @@ public abstract class PixelSetupWindow : Window
     private readonly Grid _pageContent = new();
     private readonly Grid _pageFooter = new();
     private readonly FontFamily _pixelFont;
+    private bool _exitRequested;
 
     protected PixelSetupWindow(SetupTexts texts, string title, string iconPath)
     {
@@ -32,7 +35,7 @@ public abstract class PixelSetupWindow : Window
         Icon = Bitmap(iconPath);
         FontFamily = _pixelFont;
         TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
-        TextOptions.SetTextRenderingMode(this, TextRenderingMode.Aliased);
+        TextOptions.SetTextRenderingMode(this, TextRenderingMode.Grayscale);
         UseLayoutRounding = true;
         SnapsToDevicePixels = true;
 
@@ -69,6 +72,7 @@ public abstract class PixelSetupWindow : Window
             FontWeight = weight,
             Foreground = Brush(color),
             TextWrapping = TextWrapping.Wrap,
+            LineHeight = Math.Ceiling(size * 1.28),
             VerticalAlignment = VerticalAlignment.Center
         };
     }
@@ -163,6 +167,73 @@ public abstract class PixelSetupWindow : Window
         };
     }
 
+    protected ScrollViewer PixelScrollViewer(UIElement child, double maxHeight)
+    {
+        ScrollViewer viewer = new()
+        {
+            Content = child,
+            MaxHeight = maxHeight,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            PanningMode = PanningMode.VerticalOnly,
+            Padding = new Thickness(0, 0, 6, 0)
+        };
+        viewer.Resources.Add(typeof(ScrollBar), PixelScrollBarStyle());
+        return viewer;
+    }
+
+    private static Style PixelScrollBarStyle()
+    {
+        const string templateXaml = """
+<ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:p="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+                 TargetType="{x:Type ScrollBar}">
+    <Grid Width="10" SnapsToDevicePixels="True">
+        <Border Margin="3,0,2,0"
+                Background="#FFF6DE"
+                BorderBrush="#E6C99B"
+                BorderThickness="1"/>
+        <p:Track x:Name="PART_Track"
+                 Margin="3,2,2,2"
+                 IsDirectionReversed="True">
+            <p:Track.DecreaseRepeatButton>
+                <RepeatButton Command="ScrollBar.PageUpCommand"
+                              Opacity="0"
+                              Focusable="False"/>
+            </p:Track.DecreaseRepeatButton>
+            <p:Track.Thumb>
+                <Thumb MinHeight="28">
+                    <Thumb.Template>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border Background="#FFD15A"
+                                    BorderBrush="#7A4C24"
+                                    BorderThickness="1">
+                                <Border Margin="2"
+                                        Background="#FFE8A5"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Thumb.Template>
+                </Thumb>
+            </p:Track.Thumb>
+            <p:Track.IncreaseRepeatButton>
+                <RepeatButton Command="ScrollBar.PageDownCommand"
+                              Opacity="0"
+                              Focusable="False"/>
+            </p:Track.IncreaseRepeatButton>
+        </p:Track>
+    </Grid>
+</ControlTemplate>
+""";
+        Style style = new(typeof(ScrollBar));
+        style.Setters.Add(new Setter(WidthProperty, 10.0));
+        style.Setters.Add(new Setter(Control.BackgroundProperty, Brush("#FFF1CF")));
+        style.Setters.Add(new Setter(Control.ForegroundProperty, Brush("#FFD15A")));
+        style.Setters.Add(new Setter(BorderBrushProperty, Brush("#E6C99B")));
+        style.Setters.Add(new Setter(TemplateProperty, (ControlTemplate)XamlReader.Parse(templateXaml)));
+        return style;
+    }
+
     protected Grid TwoColumnCard(string image, UIElement right, double imageWidth = 350)
     {
         Grid grid = new();
@@ -194,6 +265,22 @@ public abstract class PixelSetupWindow : Window
         PageFooter.Children.Add(Separator());
         PageFooter.Children.Add(panel);
         return panel;
+    }
+
+    protected void ExitSetup(int exitCode = 0)
+    {
+        _exitRequested = true;
+        Application.Current.Shutdown(exitCode);
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        if (!_exitRequested && Application.Current is not null)
+        {
+            _exitRequested = true;
+            Application.Current.Shutdown();
+        }
     }
 
     protected Border ProgressBar(out Rectangle fill)
@@ -352,7 +439,7 @@ public abstract class PixelSetupWindow : Window
         };
         controls.Children.Add(ChromeButton("minimize", (_, _) => WindowState = WindowState.Minimized));
         controls.Children.Add(ChromeButton("maximize", (_, _) => { }));
-        controls.Children.Add(ChromeButton("close", (_, _) => Close()));
+        controls.Children.Add(ChromeButton("close", (_, _) => ExitSetup()));
         Grid.SetColumn(controls, 1);
         grid.Children.Add(controls);
         border.Child = grid;

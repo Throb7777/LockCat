@@ -60,7 +60,7 @@ public sealed class UninstallerWindow : PixelSetupWindow
         card.Margin = new Thickness(46, 48, 46, 10);
         PageContent.Children.Add(card);
         FooterButtons(
-            PixelButton(Texts.Cancel, false, (_, _) => Close()),
+            PixelButton(Texts.Cancel, false, (_, _) => ExitSetup()),
             PixelButton(Texts.UninstallLockCat, true, async (_, _) => await BeginUninstallAsync()));
     }
 
@@ -70,7 +70,7 @@ public sealed class UninstallerWindow : PixelSetupWindow
         {
             string settingsArg = _keepSettings ? string.Empty : " --remove-settings";
             SetupOperations.RelaunchElevated($"--install-dir \"{_installDirectory}\"{settingsArg}");
-            Close();
+            ExitSetup();
             return;
         }
 
@@ -170,7 +170,7 @@ public sealed class UninstallerWindow : PixelSetupWindow
         Border card = PixelCard(TwoColumnCard("uninstall-complete.png", right, 390));
         card.Margin = new Thickness(46, 48, 46, 10);
         PageContent.Children.Add(card);
-        FooterButtons(PixelButton(Texts.Finish, true, (_, _) => Close()));
+        FooterButtons(PixelButton(Texts.Finish, true, (_, _) => ExitSetup()));
     }
 
     private void ShowFailure()
@@ -184,7 +184,7 @@ public sealed class UninstallerWindow : PixelSetupWindow
         PageContent.Children.Add(PixelCard(panel));
         FooterButtons(
             PixelButton(Texts.Details, false, (_, _) => Process.Start("notepad.exe", Path.Combine(Path.GetTempPath(), "LockCatUninstaller.log"))),
-            PixelButton(Texts.Finish, true, (_, _) => Close()));
+            PixelButton(Texts.Finish, true, (_, _) => ExitSetup(1)));
     }
 
     private UIElement DottedLine()
