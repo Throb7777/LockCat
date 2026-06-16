@@ -96,6 +96,16 @@ dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c R
 
 メインアプリは `src/LockPig`、インストーラーとアンインストーラーは `src/LockCat.Installer` と `src/LockCat.Uninstaller` にあります。
 
+Release 用の単一ファイルインストーラーを作る場合は、この順番で publish します。
+
+```powershell
+dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
+$payload = (Resolve-Path dist\LockCat).Path
+$uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path
+dotnet publish src\LockCat.Installer\LockCat.Installer.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true "-p:PayloadSourceDir=$payload" "-p:UninstallerBundlePath=$uninstaller" -o dist\LockCat-installer
+```
+
 ## フィードバック
 
 気になるところや提案があれば、こちらから送ってください。

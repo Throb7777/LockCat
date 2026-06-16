@@ -96,6 +96,16 @@ dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c R
 
 The main app project is `src/LockPig`, and the installer/uninstaller projects are in `src/LockCat.Installer` and `src/LockCat.Uninstaller`.
 
+To create the single-file installer used for releases, publish in this order:
+
+```powershell
+dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
+$payload = (Resolve-Path dist\LockCat).Path
+$uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path
+dotnet publish src\LockCat.Installer\LockCat.Installer.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true "-p:PayloadSourceDir=$payload" "-p:UninstallerBundlePath=$uninstaller" -o dist\LockCat-installer
+```
+
 ## Feedback
 
 If something feels odd, please open an issue:

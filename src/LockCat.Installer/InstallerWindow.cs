@@ -202,11 +202,12 @@ public sealed class InstallerWindow : PixelSetupWindow
         Progress<SetupProgress> progress = new(UpdateProgress);
         try
         {
+            using BundledInstallerPackage package = BundledInstallerPackage.Create();
             await SetupOperations.InstallAsync(new InstallOptions
             {
                 InstallDirectory = _installDirectory,
-                PayloadDirectory = Path.Combine(AppContext.BaseDirectory, "Payload"),
-                UninstallerPath = Path.Combine(AppContext.BaseDirectory, SetupOperations.UninstallerExecutable),
+                PayloadDirectory = package.PayloadDirectory,
+                UninstallerPath = package.UninstallerPath,
                 CreateDesktopShortcut = _desktopShortcut,
                 StartWithWindows = _startWithWindows,
                 StartAfterInstall = _launchNow,
@@ -232,6 +233,10 @@ public sealed class InstallerWindow : PixelSetupWindow
         page.Children.Add(Illustration("install-progress.png", 360, 360));
 
         StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(24, 0, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 220, 58);
+        logo.HorizontalAlignment = HorizontalAlignment.Left;
+        logo.Margin = new Thickness(0, 0, 0, 16);
+        right.Children.Add(logo);
         right.Children.Add(Text(Texts.InstallingTitle, 38, FontWeights.Black));
         _progressMessage = Text(Texts.CopyingFiles, 21, FontWeights.SemiBold);
         _progressMessage.Margin = new Thickness(0, 32, 0, 18);
@@ -289,6 +294,10 @@ public sealed class InstallerWindow : PixelSetupWindow
     {
         ClearPage();
         StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(20, 0, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 230, 60);
+        logo.HorizontalAlignment = HorizontalAlignment.Left;
+        logo.Margin = new Thickness(0, 0, 0, 18);
+        right.Children.Add(logo);
         right.Children.Add(Text(Texts.InstallCompleteTitle, 37, FontWeights.Black));
         TextBlock line1 = Text(Texts.InstallCompleteLine1, 24, FontWeights.SemiBold);
         line1.Margin = new Thickness(0, 28, 0, 10);

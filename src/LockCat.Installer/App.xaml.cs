@@ -18,8 +18,9 @@ public partial class App : Application
             if (silentInstall)
             {
                 string installDir = SetupOperations.ReadOption(e.Args, "--install-dir") ?? SetupOperations.DefaultInstallDirectory();
-                string payload = SetupOperations.ReadOption(e.Args, "--payload-dir") ?? Path.Combine(AppContext.BaseDirectory, "Payload");
-                string uninstaller = SetupOperations.ReadOption(e.Args, "--uninstaller") ?? Path.Combine(AppContext.BaseDirectory, SetupOperations.UninstallerExecutable);
+                using BundledInstallerPackage package = BundledInstallerPackage.Create();
+                string payload = SetupOperations.ReadOption(e.Args, "--payload-dir") ?? package.PayloadDirectory;
+                string uninstaller = SetupOperations.ReadOption(e.Args, "--uninstaller") ?? package.UninstallerPath;
                 await SetupOperations.InstallAsync(new InstallOptions
                 {
                     InstallDirectory = installDir,

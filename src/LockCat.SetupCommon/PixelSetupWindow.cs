@@ -18,7 +18,7 @@ public abstract class PixelSetupWindow : Window
     protected PixelSetupWindow(SetupTexts texts, string title, string iconPath)
     {
         Texts = texts;
-        _pixelFont = new FontFamily(new Uri("pack://siteoforigin:,,,/"), "Assets/Fonts/#Fusion Pixel 12px Prop zh_hans");
+        _pixelFont = new FontFamily(new Uri("pack://application:,,,/", UriKind.Absolute), "./Assets/Fonts/#Fusion Pixel 12px Prop zh_hans");
 
         Title = title;
         Width = 960;
@@ -290,10 +290,26 @@ public abstract class PixelSetupWindow : Window
 
     protected static BitmapImage Bitmap(string path)
     {
+        try
+        {
+            return BitmapFromUri($"pack://application:,,,/{path}");
+        }
+        catch (IOException)
+        {
+            return BitmapFromUri($"pack://siteoforigin:,,,/{path}");
+        }
+        catch (Exception)
+        {
+            return BitmapFromUri($"pack://siteoforigin:,,,/{path}");
+        }
+    }
+
+    private static BitmapImage BitmapFromUri(string uri)
+    {
         BitmapImage image = new();
         image.BeginInit();
         image.CacheOption = BitmapCacheOption.OnLoad;
-        image.UriSource = new Uri($"pack://siteoforigin:,,,/{path}", UriKind.Absolute);
+        image.UriSource = new Uri(uri, UriKind.Absolute);
         image.EndInit();
         image.Freeze();
         return image;

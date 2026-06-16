@@ -96,6 +96,16 @@ dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c R
 
 主程序在 `src/LockPig`，安装器和卸载器分别在 `src/LockCat.Installer`、`src/LockCat.Uninstaller`。
 
+如果要生成 Release 使用的单文件安装器，请按这个顺序发布：
+
+```powershell
+dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
+$payload = (Resolve-Path dist\LockCat).Path
+$uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path
+dotnet publish src\LockCat.Installer\LockCat.Installer.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true "-p:PayloadSourceDir=$payload" "-p:UninstallerBundlePath=$uninstaller" -o dist\LockCat-installer
+```
+
 ## 反馈
 
 如果你发现哪里不对劲，或者希望我学会新的小动作，可以在这里提交：

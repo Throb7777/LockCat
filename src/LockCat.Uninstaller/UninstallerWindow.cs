@@ -46,6 +46,10 @@ public sealed class UninstallerWindow : PixelSetupWindow
     {
         ClearPage();
         StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(20, 0, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 230, 60);
+        logo.HorizontalAlignment = HorizontalAlignment.Left;
+        logo.Margin = new Thickness(0, 0, 0, 18);
+        right.Children.Add(logo);
         right.Children.Add(Text(Texts.UninstallConfirmTitle, 37, FontWeights.Black));
         TextBlock line = Text(Texts.UninstallConfirmLine, 20, FontWeights.SemiBold);
         line.Margin = new Thickness(0, 28, 0, 0);
@@ -99,6 +103,10 @@ public sealed class UninstallerWindow : PixelSetupWindow
         page.Children.Add(Illustration("uninstall-progress.png", 370, 360));
 
         StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(24, 0, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 220, 58);
+        logo.HorizontalAlignment = HorizontalAlignment.Left;
+        logo.Margin = new Thickness(0, 0, 0, 16);
+        right.Children.Add(logo);
         right.Children.Add(Text(Texts.UninstallingTitle, 38, FontWeights.Black));
         TextBlock line = Text(Texts.UninstallingLine, 19, FontWeights.SemiBold);
         line.Margin = new Thickness(0, 26, 0, 26);
@@ -146,6 +154,10 @@ public sealed class UninstallerWindow : PixelSetupWindow
     {
         ClearPage();
         StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(20, 0, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 230, 60);
+        logo.HorizontalAlignment = HorizontalAlignment.Left;
+        logo.Margin = new Thickness(0, 0, 0, 18);
+        right.Children.Add(logo);
         right.Children.Add(Text(Texts.UninstallCompleteTitle, 37, FontWeights.Black));
         TextBlock line1 = Text(Texts.UninstallCompleteLine1, 20, FontWeights.SemiBold);
         line1.Margin = new Thickness(0, 28, 0, 10);
