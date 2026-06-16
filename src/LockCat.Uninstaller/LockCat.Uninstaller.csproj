@@ -13,10 +13,10 @@
   <ItemGroup>
     <Compile Include="..\LockCat.SetupCommon\*.cs" Link="SetupCommon\%(Filename)%(Extension)" />
     <Resource Include="..\LockCat.SetupCommon\Assets\Icons\LockCatUninstaller.ico" Link="Assets\Icons\LockCatUninstaller.ico" />
-    <Resource Include="..\LockPig\Assets\Icons\LockCat.ico" Link="Assets\Icons\LockCat.ico" />
-    <Resource Include="..\LockPig\Assets\Pixel\cat-mini-24.png" Link="Assets\Pixel\cat-mini-24.png" />
-    <Resource Include="..\LockPig\Assets\Pixel\target-logo.png" Link="Assets\Pixel\target-logo.png" />
+    <Resource Include="..\LockCat\Assets\Icons\LockCat.ico" Link="Assets\Icons\LockCat.ico" />
+    <Resource Include="..\LockCat\Assets\Pixel\cat-mini-24.png" Link="Assets\Pixel\cat-mini-24.png" />
+    <Resource Include="..\LockCat\Assets\Pixel\target-logo.png" Link="Assets\Pixel\target-logo.png" />
     <Resource Include="..\LockCat.SetupCommon\Assets\Illustrations\*.png" Link="Assets\Illustrations\%(Filename)%(Extension)" />
-    <Resource Include="..\LockPig\Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" Link="Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" />
+    <Resource Include="..\LockCat\Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" Link="Assets\Fonts\fusion-pixel-12px-proportional-zh_hans.ttf" />
   </ItemGroup>
 </Project>

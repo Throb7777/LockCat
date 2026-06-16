@@ -298,19 +298,21 @@ public sealed class InstallerWindow : PixelSetupWindow
     private void ShowComplete()
     {
         ClearPage();
-        StackPanel right = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(20, 0, 0, 0) };
-        Image logo = PixelImage("Assets/Pixel/target-logo.png", 230, 60);
+        StackPanel right = new() { VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(20, 6, 0, 0) };
+        Image logo = PixelImage("Assets/Pixel/target-logo.png", 214, 52);
         logo.HorizontalAlignment = HorizontalAlignment.Left;
-        logo.Margin = new Thickness(0, 0, 0, 18);
+        logo.Margin = new Thickness(0, 0, 0, 10);
         right.Children.Add(logo);
-        right.Children.Add(Text(Texts.InstallCompleteTitle, 37, FontWeights.Black));
+        right.Children.Add(Text(Texts.InstallCompleteTitle, 35, FontWeights.Black));
         TextBlock line1 = Text(Texts.InstallCompleteLine1, 24, FontWeights.SemiBold);
-        line1.Margin = new Thickness(0, 28, 0, 10);
+        line1.Margin = new Thickness(0, 16, 0, 8);
         right.Children.Add(line1);
         right.Children.Add(Text(Texts.InstallCompleteLine2, 19, FontWeights.SemiBold));
-        right.Children.Add(DottedLine());
-        right.Children.Add(PixelCheck(Texts.LaunchNow, null, _launchNow, value => _launchNow = value));
-        right.Children.Add(PixelCheck(Texts.ViewGuide, null, _viewGuide, value => _viewGuide = value));
+        UIElement divider = DottedLine();
+        ((FrameworkElement)divider).Margin = new Thickness(0, 14, 0, 0);
+        right.Children.Add(divider);
+        right.Children.Add(CompactPixelCheck(Texts.LaunchNow, _launchNow, value => _launchNow = value));
+        right.Children.Add(CompactPixelCheck(Texts.ViewGuide, _viewGuide, value => _viewGuide = value));
         Border card = PixelCard(TwoColumnCard("install-complete.png", right, 380));
         card.Margin = new Thickness(46, 48, 46, 10);
         PageContent.Children.Add(card);
@@ -363,6 +365,47 @@ public sealed class InstallerWindow : PixelSetupWindow
     private void OpenGuide()
     {
         SetupOperations.OpenExternal(SetupOperations.GuideUrl(Texts.Language));
+    }
+
+    private UIElement CompactPixelCheck(string text, bool initial, Action<bool> changed)
+    {
+        bool isChecked = initial;
+        Grid row = new()
+        {
+            Cursor = System.Windows.Input.Cursors.Hand,
+            Margin = new Thickness(0, 5, 0, 4)
+        };
+        row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(34) });
+        row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+        Border square = new()
+        {
+            Width = 22,
+            Height = 22,
+            BorderBrush = Brush("#C69B66"),
+            BorderThickness = new Thickness(2),
+            Background = initial ? Brush("#FFD15A") : Brush("#FFFFF8"),
+            VerticalAlignment = VerticalAlignment.Top
+        };
+        TextBlock mark = Text("OK", 10, FontWeights.Black);
+        mark.HorizontalAlignment = HorizontalAlignment.Center;
+        mark.VerticalAlignment = VerticalAlignment.Center;
+        mark.Visibility = initial ? Visibility.Visible : Visibility.Collapsed;
+        square.Child = mark;
+        row.Children.Add(square);
+
+        TextBlock label = Text(text, 18, FontWeights.Bold);
+        label.Margin = new Thickness(0, -1, 0, 0);
+        Grid.SetColumn(label, 1);
+        row.Children.Add(label);
+        row.MouseLeftButtonUp += (_, _) =>
+        {
+            isChecked = !isChecked;
+            square.Background = isChecked ? Brush("#FFD15A") : Brush("#FFFFF8");
+            mark.Visibility = isChecked ? Visibility.Visible : Visibility.Collapsed;
+            changed(isChecked);
+        };
+        return row;
     }
 
     private UIElement DottedLine()

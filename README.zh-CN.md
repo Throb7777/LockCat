@@ -1,10 +1,10 @@
 # LockCat
 
-![LockCat 像素标题](src/LockPig/Assets/Pixel/target-logo.png)
+![LockCat 像素标题](src/LockCat/Assets/Pixel/target-logo.png)
 
 你好，我是 LockCat，一只会待在 Windows 桌面上的像素小猫。我平时安安静静，偶尔动动尾巴；需要暂时锁住键盘和屏幕的时候，我会认真值班。
 
-![LockCat 桌面小猫](src/LockPig/Assets/Cat/Sprites/cat-idle.png)
+![LockCat 桌面小猫](src/LockCat/Assets/Cat/Sprites/cat-idle.png)
 
 [English](README.md) | [日本語](README.ja.md) | [提交问题](https://github.com/Throb7777/LockCat/issues/new/choose)
 
@@ -88,18 +88,18 @@ LockCat 不会读取你输入的具体内容。它只监听你设置的快捷键
 先安装 .NET 8 SDK，然后运行：
 
 ```powershell
-dotnet build src\LockPig\LockPig.csproj -c Release
+dotnet build src\LockCat\LockCat.csproj -c Release
 dotnet build src\LockCat.Installer\LockCat.Installer.csproj -c Release
 dotnet build src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release
 dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c Release
 ```
 
-主程序在 `src/LockPig`，安装器和卸载器分别在 `src/LockCat.Installer`、`src/LockCat.Uninstaller`。
+主程序在 `src/LockCat`，安装器和卸载器分别在 `src/LockCat.Installer`、`src/LockCat.Uninstaller`。
 
 如果要生成 Release 使用的单文件安装器，请按这个顺序发布：
 
 ```powershell
-dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat\LockCat.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
 dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
 $payload = (Resolve-Path dist\LockCat).Path
 $uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path

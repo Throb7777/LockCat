@@ -1,10 +1,10 @@
 # LockCat
 
-![LockCat pixel logo](src/LockPig/Assets/Pixel/target-logo.png)
+![LockCat pixel logo](src/LockCat/Assets/Pixel/target-logo.png)
 
 Hi, I am LockCat. I am a small pixel cat that sits on your Windows desktop and helps you temporarily lock your keyboard and screen. Most of the time I stay quiet. When you need a tiny guard on duty, I put on my serious face.
 
-![LockCat desktop cat](src/LockPig/Assets/Cat/Sprites/cat-idle.png)
+![LockCat desktop cat](src/LockCat/Assets/Cat/Sprites/cat-idle.png)
 
 [Chinese guide](README.zh-CN.md) | [Japanese guide](README.ja.md) | [Report an issue](https://github.com/Throb7777/LockCat/issues/new/choose)
 
@@ -88,18 +88,18 @@ LockCat does not read the text you type. It listens for the configured hotkeys a
 Install the .NET 8 SDK, then run:
 
 ```powershell
-dotnet build src\LockPig\LockPig.csproj -c Release
+dotnet build src\LockCat\LockCat.csproj -c Release
 dotnet build src\LockCat.Installer\LockCat.Installer.csproj -c Release
 dotnet build src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release
 dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c Release
 ```
 
-The main app project is `src/LockPig`, and the installer/uninstaller projects are in `src/LockCat.Installer` and `src/LockCat.Uninstaller`.
+The main app project is `src/LockCat`, and the installer/uninstaller projects are in `src/LockCat.Installer` and `src/LockCat.Uninstaller`.
 
 To create the single-file installer used for releases, publish in this order:
 
 ```powershell
-dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat\LockCat.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
 dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
 $payload = (Resolve-Path dist\LockCat).Path
 $uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path

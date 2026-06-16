@@ -1,10 +1,10 @@
 # LockCat
 
-![LockCat pixel logo](src/LockPig/Assets/Pixel/target-logo.png)
+![LockCat pixel logo](src/LockCat/Assets/Pixel/target-logo.png)
 
 こんにちは、LockCat です。Windows のデスクトップに小さく座って、必要なときにキーボードと画面を一時的にロックするピクセル猫です。普段はのんびり、見張り中はまじめです。
 
-![LockCat desktop cat](src/LockPig/Assets/Cat/Sprites/cat-idle.png)
+![LockCat desktop cat](src/LockCat/Assets/Cat/Sprites/cat-idle.png)
 
 [English](README.md) | [中文](README.zh-CN.md) | [Issue を送る](https://github.com/Throb7777/LockCat/issues/new/choose)
 
@@ -88,18 +88,18 @@ LockCat は入力内容そのものを読み取りません。設定されたホ
 .NET 8 SDK をインストールしてから実行します。
 
 ```powershell
-dotnet build src\LockPig\LockPig.csproj -c Release
+dotnet build src\LockCat\LockCat.csproj -c Release
 dotnet build src\LockCat.Installer\LockCat.Installer.csproj -c Release
 dotnet build src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release
 dotnet run --project qa-uninstall-safety\LockCatUninstallSafetyProbe.csproj -c Release
 ```
 
-メインアプリは `src/LockPig`、インストーラーとアンインストーラーは `src/LockCat.Installer` と `src/LockCat.Uninstaller` にあります。
+メインアプリは `src/LockCat`、インストーラーとアンインストーラーは `src/LockCat.Installer` と `src/LockCat.Uninstaller` にあります。
 
 Release 用の単一ファイルインストーラーを作る場合は、この順番で publish します。
 
 ```powershell
-dotnet publish src\LockPig\LockPig.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
+dotnet publish src\LockCat\LockCat.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat
 dotnet publish src\LockCat.Uninstaller\LockCat.Uninstaller.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist\LockCat-uninstaller-build
 $payload = (Resolve-Path dist\LockCat).Path
 $uninstaller = (Resolve-Path dist\LockCat-uninstaller-build\LockCatUninstaller.exe).Path

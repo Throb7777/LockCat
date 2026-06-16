@@ -18,7 +18,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Build app
-        run: dotnet build src\LockPig\LockPig.csproj -c Release
+        run: dotnet build src\LockCat\LockCat.csproj -c Release
 
       - name: Build installer
         run: dotnet build src\LockCat.Installer\LockCat.Installer.csproj -c Release

@@ -8,9 +8,9 @@ LockCat uses Fusion Pixel Font for its pixel-style UI text.
 
 The font license files are included under:
 
-- `src/LockPig/Assets/Fonts/FusionPixelFont-OFL.txt`
-- `src/LockPig/Assets/Fonts/FusionPixelFont-LICENSE-OFL.txt`
-- `src/LockPig/Assets/Fonts/FusionPixelFont-Upstream-LICENSE/`
+- `src/LockCat/Assets/Fonts/FusionPixelFont-OFL.txt`
+- `src/LockCat/Assets/Fonts/FusionPixelFont-LICENSE-OFL.txt`
+- `src/LockCat/Assets/Fonts/FusionPixelFont-Upstream-LICENSE/`
 
 Please keep these notices when redistributing LockCat or modified builds.
 
