@@ -70,6 +70,11 @@ public sealed record LocalizedStrings
     public required string PetBubbleCurious { get; init; }
     public required string PetBubbleHere { get; init; }
     public required string PetBubbleYawn { get; init; }
+    public required string PetTripleClickPromptTitle { get; init; }
+    public required string PetTripleClickPromptMessage { get; init; }
+    public required string PetTripleClickPromptRemaining { get; init; }
+    public required string PetTripleClickPromptLock { get; init; }
+    public required string PetTripleClickPromptSkip { get; init; }
 }
 
 public static class Strings
@@ -165,7 +170,12 @@ public static class Strings
         PetBubbleMeow = "喵",
         PetBubbleCurious = "嗯？",
         PetBubbleHere = "在呢",
-        PetBubbleYawn = "哈欠"
+        PetBubbleYawn = "哈欠",
+        PetTripleClickPromptTitle = "三连击锁定",
+        PetTripleClickPromptMessage = "连续点击小猫 3 次，可以让 LockCat 进入锁定。键盘会暂时锁住，屏幕也会按你的设置关闭。",
+        PetTripleClickPromptRemaining = "这类提示还会出现 {0} 次。",
+        PetTripleClickPromptLock = "这次锁定",
+        PetTripleClickPromptSkip = "这次不锁"
     };
 
     private static readonly LocalizedStrings English = Chinese with
@@ -235,7 +245,12 @@ public static class Strings
         PetBubbleMeow = "Meow",
         PetBubbleCurious = "Hm?",
         PetBubbleHere = "Here",
-        PetBubbleYawn = "Yawn"
+        PetBubbleYawn = "Yawn",
+        PetTripleClickPromptTitle = "Triple-click lock",
+        PetTripleClickPromptMessage = "Click the cat 3 times in a row to ask LockCat to lock. The keyboard will pause, and the screen follows your lock setting.",
+        PetTripleClickPromptRemaining = "This hint will appear {0} more time(s).",
+        PetTripleClickPromptLock = "Lock this time",
+        PetTripleClickPromptSkip = "Not this time"
     };
 
     private static readonly LocalizedStrings Japanese = Chinese with
@@ -303,6 +318,11 @@ public static class Strings
         PetBubbleMeow = "にゃ",
         PetBubbleCurious = "え？",
         PetBubbleHere = "いるよ",
-        PetBubbleYawn = "あくび"
+        PetBubbleYawn = "あくび",
+        PetTripleClickPromptTitle = "3 回クリックでロック",
+        PetTripleClickPromptMessage = "小猫を続けて 3 回クリックすると、LockCat がロックします。キーボードは一時的に止まり、画面は設定に従ってオフになります。",
+        PetTripleClickPromptRemaining = "この案内はあと {0} 回表示されます。",
+        PetTripleClickPromptLock = "今回はロック",
+        PetTripleClickPromptSkip = "今回はしない"
     };
 }

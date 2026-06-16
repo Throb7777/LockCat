@@ -11,4 +11,5 @@ public sealed class AppSettings
     public double PetOpacity { get; set; } = 1.0;
     public bool StartWithWindows { get; set; }
     public string Language { get; set; } = "zh-CN";
+    public int PetTripleClickLockPromptCount { get; set; }
 }

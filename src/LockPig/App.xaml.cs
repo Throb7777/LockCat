@@ -1,3 +1,4 @@
+using LockPig.Localization;
 using LockPig.Models;
 using LockPig.Services;
 using LockPig.Windows;
@@ -61,7 +62,7 @@ public partial class App : System.Windows.Application
             _keyboardHookService = new KeyboardHookService(() => _settings.UnlockHotkey);
             _appState = new AppState(_settings, _keyboardHookService, _monitorService, _ddcMonitorService);
 
-            _petWindow = new PetWindow(_appState, _settings, ShowSettings, HidePet, ExitApplication);
+            _petWindow = new PetWindow(_appState, _settings, ShowSettings, HidePet, ExitApplication, ConfirmPetTripleClickLock);
             if (_settings.PetVisible)
             {
                 _petWindow.Show();
@@ -209,6 +210,25 @@ public partial class App : System.Windows.Application
         _petWindow?.NotifySettingsOpened();
     }
 
+    private bool ConfirmPetTripleClickLock()
+    {
+        if (_settings.PetTripleClickLockPromptCount >= 2)
+        {
+            return true;
+        }
+
+        LocalizedStrings strings = Strings.For(_settings.Language);
+        PetLockPromptWindow prompt = new(strings, 2 - _settings.PetTripleClickLockPromptCount)
+        {
+            Owner = _petWindow
+        };
+
+        bool shouldLock = prompt.ShowDialog() == true;
+        _settings.PetTripleClickLockPromptCount = Math.Min(2, _settings.PetTripleClickLockPromptCount + 1);
+        _settingsStore?.Save(_settings);
+        return shouldLock;
+    }
+
     private void ShowPet()
     {
         if (_petWindow is null || _settingsStore is null)
@@ -241,6 +261,7 @@ public partial class App : System.Windows.Application
 
     private void SaveSettings(AppSettings updated)
     {
+        updated.PetTripleClickLockPromptCount = _settings.PetTripleClickLockPromptCount;
         _settings = updated;
         _settingsStore!.Save(_settings);
         _startupService!.SetEnabled(_settings.StartWithWindows);

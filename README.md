@@ -53,7 +53,7 @@ You can change both hotkeys in Settings.
 The desktop cat is not just decoration. It is the small front door to LockCat.
 
 - Single-click me and I will react.
-- Double-click me to lock.
+- Triple-click me to lock. The first two times, I will ask before locking so you know what is happening.
 - Right-click me to open the quick menu.
 - Drag me to move me around.
 - Hide or show me from Settings or the tray menu.

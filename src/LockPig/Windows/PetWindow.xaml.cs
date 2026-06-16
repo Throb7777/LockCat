@@ -22,6 +22,7 @@ public partial class PetWindow : Window
     private readonly Action? _settingsRequested;
     private readonly Action? _hidePetRequested;
     private readonly Action? _exitRequested;
+    private readonly Func<bool>? _tripleClickLockRequested;
     private readonly DispatcherTimer _animationTimer = new();
     private readonly DispatcherTimer _singleClickTimer = new();
     private readonly Dictionary<PetPose, ImageSource> _sprites;
@@ -55,13 +56,15 @@ public partial class PetWindow : Window
         AppSettings settings,
         Action? settingsRequested = null,
         Action? hidePetRequested = null,
-        Action? exitRequested = null)
+        Action? exitRequested = null,
+        Func<bool>? tripleClickLockRequested = null)
     {
         InitializeComponent();
         _appState = appState;
         _settingsRequested = settingsRequested;
         _hidePetRequested = hidePetRequested;
         _exitRequested = exitRequested;
+        _tripleClickLockRequested = tripleClickLockRequested;
         _strings = Strings.For(settings.Language);
         _sprites = LoadSprites();
 
@@ -395,6 +398,24 @@ public partial class PetWindow : Window
         StartAction(action, priority, duration, bubble, effect, force: true);
     }
 
+    private void RequestTripleClickLock()
+    {
+        bool shouldLock = _tripleClickLockRequested?.Invoke() ?? true;
+        if (shouldLock)
+        {
+            StartLockIntro();
+            return;
+        }
+
+        StartAction(PetAction.EarWiggle, PetPriority.User, TimeSpan.FromMilliseconds(700), _strings.PetBubbleCurious, "?");
+    }
+
+    private void StartLockIntro()
+    {
+        _lockAfterIntro = true;
+        StartAction(PetAction.LockIntro, PetPriority.System, TimeSpan.FromMilliseconds(850), _strings.PetBubbleGuard, "LOCK");
+    }
+
     private void PlayClickResponse()
     {
         MarkUserActivity();
@@ -634,11 +655,17 @@ public partial class PetWindow : Window
             return;
         }
 
-        if (e.ClickCount >= 2)
+        if (e.ClickCount >= 3)
         {
             _singleClickTimer.Stop();
-            _lockAfterIntro = true;
-            StartAction(PetAction.LockIntro, PetPriority.System, TimeSpan.FromMilliseconds(850), _strings.PetBubbleGuard, "LOCK");
+            RequestTripleClickLock();
+            e.Handled = true;
+            return;
+        }
+
+        if (e.ClickCount == 2)
+        {
+            _singleClickTimer.Stop();
             e.Handled = true;
             return;
         }
@@ -734,8 +761,7 @@ public partial class PetWindow : Window
     private void LockMenuItem_Click(object sender, RoutedEventArgs e)
     {
         PetMenuPopup.IsOpen = false;
-        _lockAfterIntro = true;
-        StartAction(PetAction.LockIntro, PetPriority.System, TimeSpan.FromMilliseconds(850), _strings.PetBubbleGuard, "LOCK");
+        StartLockIntro();
     }
 
     private void SettingsMenuItem_Click(object sender, RoutedEventArgs e)

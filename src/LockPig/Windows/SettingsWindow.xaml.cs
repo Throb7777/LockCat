@@ -235,7 +235,8 @@ public partial class SettingsWindow : Window
             PetAlwaysOnTop = AlwaysOnTopSwitch.IsChecked,
             PetOpacity = Math.Clamp(PetOpacitySlider.Value / 100, 0.2, 1.0),
             StartWithWindows = StartWithWindowsSwitch.IsChecked,
-            Language = _selectedLanguage
+            Language = _selectedLanguage,
+            PetTripleClickLockPromptCount = _baselineSettings.PetTripleClickLockPromptCount
         };
 
         _saveRequested(settings);
@@ -397,7 +398,8 @@ public partial class SettingsWindow : Window
             PetAlwaysOnTop = settings.PetAlwaysOnTop,
             PetOpacity = Math.Clamp(settings.PetOpacity, 0.2, 1.0),
             StartWithWindows = settings.StartWithWindows,
-            Language = Strings.NormalizeLanguage(settings.Language)
+            Language = Strings.NormalizeLanguage(settings.Language),
+            PetTripleClickLockPromptCount = settings.PetTripleClickLockPromptCount
         };
     }
 
