@@ -10,9 +10,10 @@ Hi, I am LockCat. I am a small pixel cat that sits on your Windows desktop and h
 
 ## What LockCat Does
 
-- Locks your keyboard with a hotkey.
+- Locks the local keyboard with a hotkey.
 - Optionally turns off the screen when locking.
-- Restores control with another hotkey.
+- Keeps remote-session or remote-control keyboard input available for recovery and maintenance.
+- Restores local control with another hotkey.
 - Lives in the system tray for quick access.
 - Shows a small animated pixel cat on the desktop.
 - Remembers your settings between launches.
@@ -78,6 +79,12 @@ You can change:
 Use the Start menu uninstall entry or run `LockCatUninstaller.exe` from the install folder.
 
 Important little cat promise: the uninstaller only removes files that LockCat installed. It does not wipe the whole folder you selected during setup. If you keep settings, your hotkeys and preferences stay ready for the next install.
+
+## Remote Access
+
+LockCat is meant to pause the keyboard in front of the computer, not lock you out of your own maintenance channel. When LockCat is locked, local physical keyboard input is blocked, while Remote Desktop sessions and injected remote-control input are allowed to pass through where Windows exposes them that way.
+
+That means you can still connect remotely to recover the machine, change settings, or exit LockCat.
 
 ## Privacy
 
