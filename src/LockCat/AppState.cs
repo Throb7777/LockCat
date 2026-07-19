@@ -63,15 +63,18 @@ public sealed class AppState
             return;
         }
 
-        if (_hardwareMonitorOffActive || _settings.MonitorPowerMode == MonitorPowerMode.HardwareDdc)
-        {
-            _ddcMonitorService.TurnOnAndRelease();
-            _hardwareMonitorOffActive = false;
-        }
+        bool shouldWakeHardware = _hardwareMonitorOffActive || _settings.MonitorPowerMode == MonitorPowerMode.HardwareDdc;
+        _hardwareMonitorOffActive = false;
 
-        _monitorService.TurnOn();
         _keyboardHookService.SetLocked(false);
         CurrentState = LockState.Normal;
         StateChanged?.Invoke(CurrentState);
+
+        if (shouldWakeHardware)
+        {
+            _ddcMonitorService.TurnOnAndRelease();
+        }
+
+        _monitorService.TurnOn();
     }
 }
